@@ -1,0 +1,21 @@
+{% extends "./base.html.twig" %}
+
+{% block body %}
+    <div class="flex flex-col w-full h-screen items-center">
+        <div class="flex flex-col w-full text-center border-b-2 border-gray-300 mb-5 rounded-b-3xl">
+            <h1 class="text-4xl text-gray-600 py-10">Create new blog</h1>
+        </div>
+        <div class="flex flex-col justify-center mx-auto w-full max-w-screen-xl gap-5">
+            {{ form_start(form) }}
+
+            {{ form_widget(form) }}
+            <button
+                    type="submit"
+                    class="flex mx-auto uppercase mt-15 bg-blue-500 text-gray-100 text-lg font-extrabold py-4 px-8 rounded-3xl">
+                Submit Post
+            </button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
