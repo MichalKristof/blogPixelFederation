@@ -5,7 +5,7 @@ services:
     build: docker/php
     container_name: symfony_app
     ports:
-      - "8008:80"
+      - "8000:80"
     volumes:
       - ./docker/php/vhosts:/etc/apache2/sites-enabled
       - ./:/var/www
@@ -39,8 +39,6 @@ services:
       PMA_HOST: database
     networks:
       - symfony_app
-
-
 
 networks:
   symfony_app:

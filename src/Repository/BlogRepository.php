@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Blog;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,10 +41,11 @@ class BlogRepository extends ServiceEntityRepository
         }
     }
 
-    public function paginationQuery(): Query
+    public function paginationQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('b')
-            ->orderBy('b.id', 'ASC')
-            ->getQuery();
+            ->leftJoin('b.comment', 'c') // Assuming 'comments' is the property name for the OneToMany relation in the Blog entity
+            ->addSelect('COUNT(c) AS commentCount')
+            ->groupBy('b.id');
     }
 }

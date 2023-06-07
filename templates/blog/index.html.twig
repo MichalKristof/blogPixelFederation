@@ -14,7 +14,10 @@
         </a>
 
         <div class="w-full grid grid-cols-2 py-8 lg:py-16 px-4 mx-auto max-w-screen-xl gap-5">
-            {% for blog in pagination %}
+            {% for item in pagination %}
+                {% set blog = item[0] %}
+                {% set commentCount = item['commentCount'] %}
+
                 <a href="/blog/{{ blog.id }}"
                    class="flex flex-col items-start p-5 rounded-xl border border-gray-200 space-y-3 hover:scale-105 hover:bg-blue-100 duration-500">
                     <h4 class="text-xl text-gray-600 font-semibold">{{ blog.title }}</h4>
@@ -25,7 +28,7 @@
                         <span>{{ blog.author.email }}</span>
                     </div>
                     <span>{{ blog.date|date("d.m.Y", "Europe/Prague")}}</span>
-                    <span>Number of comments: NOT YET}</span>
+                    <span>Number of comments: {{ commentCount }}</span>
                 </a>
             {% endfor %}
         </div>

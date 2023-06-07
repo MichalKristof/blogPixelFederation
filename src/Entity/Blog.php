@@ -29,16 +29,16 @@ class Blog
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'blogs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Author $author = null;
 
-    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: Comment::class, orphanRemoval: true)]
-    private Collection $comments;
+    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: Comment::class)]
+    private Collection $comment;
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
+        $this->comment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,7 +99,7 @@ class Blog
         return $this->author;
     }
 
-    public function setAuthor(Author $author): self
+    public function setAuthor(?Author $author): self
     {
         $this->author = $author;
 
@@ -109,15 +109,15 @@ class Blog
     /**
      * @return Collection<int, Comment>
      */
-    public function getComments(): Collection
+    public function getComment(): Collection
     {
-        return $this->comments;
+        return $this->comment;
     }
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
+        if (!$this->comment->contains($comment)) {
+            $this->comment->add($comment);
             $comment->setBlog($this);
         }
 
@@ -126,7 +126,7 @@ class Blog
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->comment->removeElement($comment)) {
             // set the owning side to null (unless already changed)
             if ($comment->getBlog() === $this) {
                 $comment->setBlog(null);
@@ -134,10 +134,5 @@ class Blog
         }
 
         return $this;
-    }
-
-    public function getCommentsCount(): int
-    {
-        return count($this->comments);
     }
 }

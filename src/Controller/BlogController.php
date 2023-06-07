@@ -62,11 +62,11 @@ class BlogController extends AbstractController
     }
 
     #[Route('/blog/{id}', name: 'app_blog_show')]
-    public function show($id): Response
+    public function show($id, CommentRepository $commentRepository): Response
     {
         $blog = $this->blogRepository->find($id);
 
-        $comments = $blog->getComments();
+        $comments = $commentRepository->findBy(['blog' => $blog->getId()]);
 
         return $this->render('blog/show.html.twig', [
             'blog' => $blog,
