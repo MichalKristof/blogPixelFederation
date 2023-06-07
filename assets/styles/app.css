@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .input-blog {
-    @apply px-4 py-3 border-b-2 border-blue-100 focus:outline-none focus:border-blue-500 w-10/12 mb-3;
+    @apply w-full px-4 py-3 border-b-2 border-blue-100 focus:outline-none focus:border-blue-500 mb-3;
 }

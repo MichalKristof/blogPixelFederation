@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BlogRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,8 +29,17 @@ class Blog
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToOne(mappedBy: 'blog', cascade: ['persist', 'remove'])]
-    private ?Comment $blog = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Author $author = null;
+
+    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -83,20 +94,50 @@ class Blog
         return $this;
     }
 
-    public function getBlog(): ?Comment
+    public function getAuthor(): ?Author
     {
-        return $this->blog;
+        return $this->author;
     }
 
-    public function setBlog(Comment $blog): self
+    public function setAuthor(Author $author): self
     {
-        // set the owning side of the relation if necessary
-        if ($blog->getBlog() !== $this) {
-            $blog->setBlog($this);
-        }
-
-        $this->blog = $blog;
+        $this->author = $author;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getBlog() === $this) {
+                $comment->setBlog(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCommentsCount(): int
+    {
+        return count($this->comments);
     }
 }

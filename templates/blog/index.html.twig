@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}Blog pixel federation{% endblock %}
 
 {% block body %}
     <div class="flex flex-col w-full h-screen items-center">
@@ -20,6 +20,12 @@
                     <h4 class="text-xl text-gray-600 font-semibold">{{ blog.title }}</h4>
                     <p class="">{{ blog.description }}</p>
                     <span>{{ blog.date|date("d.m.Y", "Europe/Prague") }}</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-gray-600">Author</span>
+                        <span>{{ blog.author.email }}</span>
+                    </div>
+                    <span>{{ blog.date|date("d.m.Y", "Europe/Prague")}}</span>
+                    <span>Number of comments: NOT YET}</span>
                 </a>
             {% endfor %}
         </div>

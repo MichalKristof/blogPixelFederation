@@ -1,30 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}blog | {{ blog.title }}{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
+    <div class="flex flex-col w-full h-screen items-center">
+        <div class="flex flex-col w-full text-center border-b-2 border-gray-300 mb-5 rounded-b-3xl">
+            <h1 class="text-4xl text-gray-600 py-10">{{ blog.title }}</h1>
+        </div>
 
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
-
-    <div class="flex flex-col h-screen items-center">
-        <a href="/" class="text-2xl text-gray-600 py-10">
-            <i class="fas fa-arrow-left"></i>
-            Back
+        <a href="/" class="flex justify-self-end bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Back to home page
         </a>
-        <h1 class="text-4xl text-gray-600 py-10">{{ blog.title }}</h1>
 
-        <span>{{ blog.description }}</span>
-        <p>{{ blog.content }}</p>
+        <div class="flex flex-col items-center mx-auto w-full max-w-screen-xl gap-5 mt-10">
+            <span>{{ blog.description }}</span>
+            <p>{{ blog.content }}</p>
+            {% if comments is not empty %}
+                <h2>Comments</h2>
+                <ul class="flex flex-col items-start divide-y-2 space-x-2 border border-gray-200 rounded-xl p-2">
+                    {% for comment in comments %}
+                        <li>{{ comment.date|date("d.m.Y", "Europe/Prague") }}: {{ comment.content }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-col items-center mx-auto w-full max-w-screen-xl gap-5 mt-10">
+            <h2>Leave a comment</h2>
+            <form action="/blog/{{ blog.id }}/comment" method="POST" class="flex flex-col items-start gap-5">
+                <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" cols="30" rows="10" class="border border-gray-200 rounded-xl p-2"></textarea>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Submit
+                </button>
+            </form>
+        </div>
     </div>
 {% endblock %}

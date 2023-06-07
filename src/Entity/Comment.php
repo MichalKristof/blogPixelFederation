@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,11 +22,7 @@ class Comment
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToOne(inversedBy: 'author', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Author $author = null;
-
-    #[ORM\OneToOne(inversedBy: 'blog', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Blog $blog = null;
 
@@ -57,24 +55,12 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?Author
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(Author $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
     public function getBlog(): ?Blog
     {
         return $this->blog;
     }
 
-    public function setBlog(Blog $blog): self
+    public function setBlog(?Blog $blog): self
     {
         $this->blog = $blog;
 

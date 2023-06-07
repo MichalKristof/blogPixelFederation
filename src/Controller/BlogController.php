@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Blog;
+use App\Entity\Comment;
 use App\Form\BlogFormType;
 use App\Repository\BlogRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,13 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     private $em;
+    private $blogRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(BlogRepository $blogRepository, EntityManagerInterface $em)
     {
+        $this->blogRepository = $blogRepository;
         $this->em = $em;
     }
     #[Route('/', name: 'app_blog')]
-    public function index(BlogRepository $blogRepository, Request $request, PaginatorInterface $paginator): Response
+    public function index(BlogRepository $blogRepository,CommentRepository $commentRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
             $blogRepository->paginationQuery(),
@@ -62,8 +66,25 @@ class BlogController extends AbstractController
     {
         $blog = $this->blogRepository->find($id);
 
+        $comments = $blog->getComments();
+
         return $this->render('blog/show.html.twig', [
             'blog' => $blog,
+            'comments' => $comments,
         ]);
+    }
+    #[Route('/blog/{id}/comment', name: 'app_blog_comment')]
+    public function comment($id, Request $request): Response
+    {
+        $blog = $this->blogRepository->find($id);
+
+        $comment = new Comment();
+        $comment->setBlog($blog);
+        $comment->setContent($request->request->get('content'));
+        $comment->setDate(new \DateTime());
+        $this->em->persist($comment);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_blog_show', ['id' => $blog->getId()]);
     }
 }
