@@ -15,7 +15,7 @@ composer-install
 docker-compose up -d --build
 ```
 
-### Open shell console service container with symfony app
+### Open shell console container service with symfony app
 ```bash
 docker-compose exec www sh
 ```
@@ -30,5 +30,12 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
-### App is running on <localhost:8008>
-### Mysql database is running on <localhost:8080>
+### compile tailwind css clases
+```bash
+npx tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch
+```
+
+### App is running on
+<localhost:8008>
+### Mysql database is running on
+<localhost:8080>

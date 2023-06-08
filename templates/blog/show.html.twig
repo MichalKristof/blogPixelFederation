@@ -3,37 +3,46 @@
 {% block title %}blog | {{ blog.title }}{% endblock %}
 
 {% block body %}
-    <div class="flex flex-col w-full h-screen items-center">
+    <div class="flex flex-col w-full items-center">
         <div class="flex flex-col w-full text-center border-b-2 border-gray-300 mb-5 rounded-b-3xl">
-            <h1 class="text-4xl text-gray-600 py-10">{{ blog.title }}</h1>
+            <h1 class="text-4xl text-gray-600 py-10">Blog Detail</h1>
         </div>
 
         <a href="/" class="flex justify-self-end bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Back to home page
         </a>
 
-        <div class="flex flex-col items-center mx-auto w-full max-w-screen-xl gap-5 mt-10">
-            <span>{{ blog.description }}</span>
-            <p>{{ blog.content }}</p>
+        <div class="flex flex-col items-center w-full">
+            <div class="flex flex-col items-center w-full max-w-screen-xl gap-5 mt-10 mx-auto border-4 border-gray-100 rounded-xl shadow-xl p-5">
+                <h1 class="text-5xl text-gray-900 font-extrabold py-5">{{ blog.title }}</h1>
+                <span class="text-4xl font-bold text-gray-700">{{ blog.description }}</span>
+                <p class="w-full text-center text-lg font-normal border-t border-b border-gray-300 p-5">{{ blog.content }}</p>
+                <span class="text-base font-semibold">{{ blog.date|date("d.m.Y", "Europe/Bratislava") }}</span>
+            </div>
             {% if comments is not empty %}
-                <h2>Comments</h2>
-                <ul class="flex flex-col items-start divide-y-2 space-x-2 border border-gray-200 rounded-xl p-2">
+            <div class="w-full max-w-screen-xl gap-5 mt-10 mx-auto">
+                <h2 class="text-2xl text-gray-500 font-semibold">Comments section</h2>
+                <ul class="flex flex-col w-full items-start space-y-4 border border-gray-200 rounded-xl p-5">
                     {% for comment in comments %}
-                        <li>{{ comment.date|date("d.m.Y", "Europe/Prague") }}: {{ comment.content }}</li>
+                        <li class="w-full border-b-2 border-gray-100">{{ comment.date|date("d.m.Y", "Europe/Bratislava") }}
+                            : {{ comment.content }}</li>
                     {% endfor %}
                 </ul>
-            {% else %}
-                <p>No comments yet.</p>
-            {% endif %}
+                {% else %}
+                    <span class="text-lg font-normal text-red-500 py-5">No comments yet...</span>
+                {% endif %}
+            </div>
         </div>
 
         <div class="flex flex-col items-center mx-auto w-full max-w-screen-xl gap-5 mt-10">
-            <h2>Leave a comment</h2>
-            <form action="/blog/{{ blog.id }}/comment" method="POST" class="flex flex-col items-start gap-5">
+            <h2 class="text-2xl text-gray-600 font-semibold">Leave a comment</h2>
+            <form action="/blog/{{ blog.id }}/comment" method="POST" class="flex flex-col w-full gap-5">
                 <input type="hidden" name="blog_id" value="{{ blog.id }}">
                 <label for="content">Content</label>
-                <textarea name="content" id="content" cols="30" rows="10" class="border border-gray-200 rounded-xl p-2"></textarea>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <textarea name="content" id="content" cols="30" rows="10"
+                          class="w-full border border-gray-200 rounded-xl p-2"></textarea>
+                <button type="submit"
+                        class="flex mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Submit
                 </button>
             </form>

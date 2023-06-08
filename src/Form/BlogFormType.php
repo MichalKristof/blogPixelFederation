@@ -18,37 +18,38 @@ class BlogFormType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['attr' => array(
-                'class' => 'input-blog',
-                'placeholder' => 'Write a title...',
+                    'class' => 'input-blog',
+                    'placeholder' => 'Write a title...',
                 ),
-                'label' => false]
+                    'label' => false]
             )
             ->add('description', TextType::class, ['attr' => array(
-                'class' => 'input-blog',
-                'placeholder' => 'Write a description...',
+                    'class' => 'input-blog',
+                    'placeholder' => 'Write a description...',
                 ),
-                'label' => false]
-            )
-            ->add('content', TextareaType::class, ['attr' => array(
-                'class' => 'input-blog',
-                'placeholder' => 'Write a content...',
-                ),
-                'label' => false]
+                    'label' => false]
             )
             ->add('author', EntityType::class, [
-                    'class' => Author::class,
-                    'choice_label' => 'email',
-                    'label' => false,
-                    'placeholder' => 'Choose an author...',
-                    'attr' => array(
-                        'class' => 'input-blog',
-                    ),
-                ],
+                'class' => Author::class,
+                'choice_label' => 'email',
+                'label' => false,
+                'placeholder' => 'Choose an author...',
+                'attr' => array(
+                    'class' => 'input-blog',
+                ),
+            ],
             )
             ->add('date', DateType::class, ['attr' => array(
-                'class' => 'input-blog',
+                    'class' => 'input-blog',
                 ),
-                'label' => false]
+                    'label' => false]
+            )
+            ->add('content', TextareaType::class, ['attr' => array(
+                    'class' => 'input-blog',
+                    'placeholder' => 'Write a content...',
+                    'rows' => '10',
+                ),
+                    'label' => false]
             );
     }
 
