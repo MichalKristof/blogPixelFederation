@@ -15,11 +15,14 @@
 
 ### Initialization
 
-1. Install dependencies
+1. Create .env file according to .env.test
+2. Install dependencies and compile webpack
 ```bash 
-composer-install
+composer install
+npm install
+npm run dev
 ``` 
-2. Build docker image and containers
+2. Build docker image and run containers
 ```bash
 docker-compose up -d --build
 ```
