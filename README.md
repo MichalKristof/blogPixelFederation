@@ -2,40 +2,60 @@
     <img src="https://symfony.com/logos/symfony_black_02.svg">
 </a></p>
 
-## Pixel federation blog - Michal Kristof
+## Simple Blog Symfony by Michal Kristof
 
-## Initialization
+#### for Pixel Federation
 
-```bash
+## Project setup
+
+### Prerequisites
+
+* [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+
+### Initialization
+
+1. Install dependencies
+```bash 
 composer-install
-```
-
-### Build docker image and containers
+``` 
+2. Build docker image and containers
 ```bash
 docker-compose up -d --build
 ```
 
-### Open shell console container service with symfony app
+### Load data
+
+1. Open shell console container service with symfony app
 ```bash
 docker-compose exec www sh
 ```
-
-### Run command for migrations
+2. Run migrations
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
-
-### Run command for doctrine fixtures to load data
+3. Load data with fixtures
 ```bash
 php bin/console doctrine:fixtures:load
 ```
+
+
+### Unit tests
+```bash
+php bin/phpunit
+```
+
+### Open app in browser
+* http://localhost:8000
+
+### Mysql database is running on
+* http://localhost:8080
+* login in .env.test
+
+
+# Additional
 
 ### compile tailwind css clases
 ```bash
 npx tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch
 ```
-
-### App is running on
-<localhost:8008>
-### Mysql database is running on
-<localhost:8080>

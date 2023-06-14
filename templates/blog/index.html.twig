@@ -9,7 +9,7 @@
             <span class="text-gray-600 py-5">Number of blogs {{ totalCount }}</span>
         </div>
 
-        <a href="/blog/create" class="flex justify-self-end bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <a href="/blog/create" class="flex justify-self-end bg-blue-500 hover:bg-blue-700 duration-500 text-white font-bold py-2 px-4 rounded">
             Create Blog
         </a>
 
@@ -21,18 +21,20 @@
                 <a href="/blog/{{ blog.id }}"
                    class="flex flex-col items-start p-5 rounded-xl border border-gray-200 space-y-3 hover:scale-105 hover:bg-blue-100 duration-500">
                     <h4 class="text-xl text-gray-600 font-semibold">{{ blog.title }}</h4>
-                    <p class="">{{ blog.description }}</p>
-                    <span>{{ blog.date|date("d.m.Y", "Europe/Prague") }}</span>
+                    <p class="text-lg text-gray-500 font-normal">{{ blog.description }}</p>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-gray-600">created</span>
+                        <span>{{ blog.date|date("d.m.Y", "Europe/Prague") }}</span>
+                    </div>
                     <div class="flex items-center space-x-2">
                         <span class="text-gray-600">Author</span>
                         <span>{{ blog.author.email }}</span>
                     </div>
-                    <span>{{ blog.date|date("d.m.Y", "Europe/Prague")}}</span>
                     <span>Number of comments: {{ commentCount }}</span>
                 </a>
             {% endfor %}
         </div>
-        <div class="flex justify-center max-w-screen-xl mx-auto text-2xl rounded-xl bg-gray-50 border border-gray-500 p-3">
+        <div class="flex justify-center max-w-screen-xl mx-auto text-2xl rounded-xl bg-gray-50 hover:bg-blue-300 duration-500 border border-gray-500 p-3">
             {{ knp_pagination_render(pagination) }}
         </div>
     </div>

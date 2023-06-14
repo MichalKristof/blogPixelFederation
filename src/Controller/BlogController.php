@@ -22,6 +22,7 @@ class BlogController extends AbstractController
     public function __construct(BlogRepository $blogRepository, EntityManagerInterface $em)
     {
         $this->blogRepository = $blogRepository;
+
         $this->em = $em;
     }
     #[Route('/', name: 'app_blog')]
@@ -30,7 +31,7 @@ class BlogController extends AbstractController
         $pagination = $paginator->paginate(
             $blogRepository->paginationQuery(),
             $request->query->getInt('page', 1),
-            Blog::NUM_ITEMS
+            Blog::NUM_ITEMS,
         );
 
         return $this->render('blog/index.html.twig', [
@@ -82,6 +83,7 @@ class BlogController extends AbstractController
         $comment->setBlog($blog);
         $comment->setContent($request->request->get('content'));
         $comment->setDate(new \DateTime());
+
         $this->em->persist($comment);
         $this->em->flush();
 
